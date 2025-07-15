@@ -1,0 +1,883 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DareDex</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'image_folder/favicon.png' %}">
+    <style>
+        :root {
+            --primary-dark: #0a1e17;
+            --primary-main: #195e48;
+            --primary-light: #2d8066;
+            --primary-lighter: #4a9d83;
+            --accent-green: #00ffc3;
+            --accent-soft: #a0ffe0;
+            --neutral-dark: #1a1a1a;
+            --neutral-medium: #2d2d2d;
+            --neutral-light: #fafbfc;
+            --neutral-white: #ffffff;
+            --body-bg: #f8fafb;
+            --card-bg: #ffffff;
+            --section-bg: #f4f7f5;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c7b7f;
+            --text-muted: #8a9ba8;
+            --text-light: #ffffff;
+            --border-light: #e8f0ed;
+            --shadow-light: rgba(25, 94, 72, 0.06);
+            --shadow-medium: rgba(25, 94, 72, 0.12);
+        }
+
+        /* Base Styles */
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-main) 100%) !important;
+            box-shadow: 0 2px 10px rgba(25, 94, 72, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--neutral-white) !important;
+        }
+
+        .navbar-logo {
+            height: 45px;
+            width: auto;
+            border-radius: 8px;
+            margin-right: 12px;
+            vertical-align: middle;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--accent-soft) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            margin: 0 2px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-green) !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-main) 50%, var(--primary-light) 100%);
+            color: var(--neutral-white);
+            padding: 120px 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-section::before,
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: blobFloat 15s infinite ease-in-out;
+            opacity: 0.15;
+        }
+
+        .hero-section::before {
+            top: -200px;
+            left: -200px;
+        }
+
+        .hero-section::after {
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 7s;
+        }
+
+        @keyframes blobFloat {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+
+            50% {
+                transform: scale(1.2) translateY(30px);
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .hero-section h1 {
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(90deg, var(--neutral-white), var(--accent-soft), var(--neutral-white));
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 8s linear infinite;
+            font-weight: 700;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        /* Buttons */
+        .btn-custom {
+            background: linear-gradient(45deg, var(--primary-main), var(--primary-light));
+            border: none;
+            color: var(--neutral-white);
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(25, 94, 72, 0.4);
+            color: var(--neutral-white);
+            background: linear-gradient(45deg, var(--primary-light), var(--primary-lighter));
+        }
+
+        .btn-outline-light {
+            border: 2px solid var(--accent-soft);
+            color: var(--accent-soft);
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--accent-soft);
+            border-color: var(--accent-soft);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(160, 255, 224, 0.3);
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-light);
+            height: 100%;
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            padding: 2rem;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+            border-color: var(--primary-light);
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+            color: var(--neutral-white);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .icon-circle {
+            transform: scale(1.1);
+        }
+
+        /* Minimalist Content Sections */
+        .content-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            border: 1px solid var(--border-light);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section:hover {
+            box-shadow: 0 8px 24px var(--shadow-medium);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-main), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        /* Gradient Utilities */
+        .bg-gradient-primary {
+            background: linear-gradient(45deg, var(--primary-main), var(--primary-light));
+        }
+
+        .bg-gradient-success {
+            background: linear-gradient(45deg, var(--primary-light), var(--accent-green));
+        }
+
+        .bg-gradient-warning {
+            background: linear-gradient(45deg, var(--primary-lighter), var(--accent-soft));
+        }
+
+        .bg-gradient-info {
+            background: linear-gradient(45deg, var(--primary-main), var(--accent-green));
+        }
+
+        /* Steps Section */
+        .steps-section {
+            background: var(--section-bg);
+            padding: 4rem 0;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px var(--shadow-light);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .step-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px var(--shadow-medium);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary-main), var(--primary-light));
+            color: var(--neutral-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 12px rgba(25, 94, 72, 0.2);
+        }
+
+        /* Clean Lists */
+        .clean-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .clean-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .clean-list li:hover {
+            background: var(--section-bg);
+            padding-left: 1rem;
+        }
+
+        .clean-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Minimalist Buttons */
+        .btn-minimal {
+            background: transparent;
+            border: 2px solid var(--primary-main);
+            color: var(--primary-main);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-minimal:hover {
+            background: var(--primary-main);
+            color: var(--neutral-white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 94, 72, 0.2);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-ghost:hover {
+            background: var(--section-bg);
+            color: var(--primary-main);
+        }
+
+        /* Professional Footer - Compact */
+        .footer {
+            background: linear-gradient(135deg, var(--neutral-dark) 0%, var(--neutral-medium) 100%);
+            color: var(--neutral-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-main), transparent);
+        }
+
+        .footer-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+
+        .footer-description {
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .footer-section h5 {
+            color: var(--neutral-white);
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            font-size: 1rem;
+        }
+
+        .footer-section h5::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 25px;
+            height: 2px;
+            background: var(--primary-main);
+        }
+
+        .footer-link {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 3px 0;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-green);
+            transform: translateX(6px);
+        }
+
+        .footer-link::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--primary-main);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::before {
+            width: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            color: #b0b0b0;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .contact-item:hover {
+            color: var(--accent-green);
+        }
+
+        .contact-item i {
+            width: 18px;
+            margin-right: 10px;
+            color: var(--primary-main);
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-main), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .social-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(25, 94, 72, 0.4);
+            color: var(--neutral-white);
+        }
+
+        .footer-bottom {
+            background: var(--primary-dark);
+            padding: 15px 0;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            color: #888;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .hero-section {
+                padding: 80px 0;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .footer-section {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}
+    <!-- Page-specific CSS goes here -->
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static '/image_folder/daredex_logo.png' %}" class="navbar-logo" alt="DareDex Logo">
+                DareDex
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dare'%}"><i class="fas fa-plus-circle me-1"></i>Create
+                            Dare</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard'%}"><i class="fas fa-compass me-1"></i>Browse
+                            Dares</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact_us'%}"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about_us'%}"><i class="fas fa-info-circle me-1"></i>About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+
+    <!-- . -->
+    <!-- . -->
+    <!-- bootstrap 5 modals -->
+
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyPolicyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-shield me-2"></i>Privacy Policy</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>We value your privacy. DareDex collects minimal personal data required for account creation and
+                        participation in challenges.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Data collected: Name, email, college
+                            name.</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>We never sell or share your personal
+                            data with third parties.</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i>Data is stored securely and access is
+                            limited to authorized staff only.</li>
+                    </ul>
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        You can request data deletion or updates anytime by contacting
+                        <strong>privacy@daredex.com</strong>.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-custom" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Terms of Service Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-file-contract me-2"></i>Terms of Service</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>By using DareDex, you agree to the following terms:</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-check text-success me-2"></i>Users must be 16+ years old or have parental
+                            consent.</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Dares must not violate any local, state, or
+                            international laws.</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Users are responsible for their actions and
+                            interactions on the platform.</li>
+                        <li><i class="fas fa-check text-success me-2"></i>We reserve the right to suspend or terminate
+                            accounts for policy violations.</li>
+                    </ul>
+                    <p class="mt-4">Use DareDex responsibly and with respect for the community.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-custom" data-bs-dismiss="modal">Accept & Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Policy Modal -->
+    <div class="modal fade" id="cookiePolicyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-cookie-bite me-2"></i>Cookie Policy</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>We use cookies to improve your experience on DareDex:</p>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-dot-circle text-warning me-2"></i>Session cookies to keep you logged in
+                            securely.</li>
+                        <li><i class="fas fa-dot-circle text-warning me-2"></i>Analytics cookies to understand how you
+                            interact with the platform.</li>
+                        <li><i class="fas fa-dot-circle text-warning me-2"></i>We do not use cookies for advertising or
+                            tracking personal information.</li>
+                    </ul>
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        You can clear cookies from your browser anytime or disable them via settings.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-custom" data-bs-dismiss="modal">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Guidelines Modal -->
+    <div class="modal fade guidelines-modal" id="guidelinesModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-shield-alt me-2"></i>Community Guidelines</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-success"><i class="fas fa-check-circle me-2"></i>What Makes a Great Dare
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Creative and original
+                                    ideas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Safe and harmless
+                                    activities</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Inclusive for all
+                                    students</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Clear and detailed
+                                    instructions</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Appropriate language
+                                    and
+                                    content</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Respect for others'
+                                    boundaries</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-danger"><i class="fas fa-times-circle me-2"></i>What's Not Allowed</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Dangerous or harmful
+                                    activities</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Illegal activities
+                                </li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Bullying or harassment
+                                </li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Inappropriate or
+                                    offensive
+                                    content</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Sharing personal
+                                    information</li>
+                                <li class="mb-2"><i class="fas fa-times text-danger me-2"></i>Discrimination of any
+                                    kind
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Review Process:</strong> All dares are reviewed by our moderation team before being
+                        published to ensure they meet our community standards.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-custom" data-bs-dismiss="modal">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- . -->
+    <!-- . -->
+
+    <!-- Professional Footer - Compact -->
+    <footer class="footer">
+        <div class="container py-4">
+            <div class="row">
+                <!-- Brand Section -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="footer-brand">
+                        <img src="{% static '/image_folder/daredex_logo.png' %}" class="navbar-logo" alt="DareDex Logo">
+                        </i>DareDex
+                    </div>
+                    <p class="footer-description">
+                        Empowering college students through exciting, safe challenges and unforgettable experiences.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/" class="social-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-t"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-3 col-6 mb-3">
+                    <div class="footer-section">
+                        <h5>Quick Links</h5>
+                        <a href="/" class="footer-link">Home</a>
+                        <a href="{% url 'dare'%}" class="footer-link">Create Dare</a>
+                        <a href="{% url 'dashboard'%}" class="footer-link">Browse Dares</a>
+                        <a href="{% url 'about_us'%}" class="footer-link">About Us</a>
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <div class="col-lg-2 col-md-3 col-6 mb-3">
+                    <div class="footer-section">
+                        <h5>Support</h5>
+                        <a href="{% url 'contact_us' %}" class="footer-link">Contact Us</a>
+                        <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#guidelinesModal">
+                            Safety Guidelines
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Legal -->
+                <div class="col-lg-2 col-md-6 mb-3">
+                    <div class="footer-section">
+                        <h5>Legal</h5>
+                        <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#termsModal">
+                            Terms of Service
+                        </a>
+                        <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">
+                            Privacy Policy
+                        </a>
+                        <a href="#" class="footer-link" data-bs-toggle="modal" data-bs-target="#cookiePolicyModal">
+                            Cookie Policy
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-2 col-md-6 mb-3">
+                    <div class="footer-section">
+                        <h5>Contact</h5>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@daredex.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>77-1-5551234</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>London , UK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 DareDex. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p>Made with <i class="fas fa-heart text-danger"></i> for students</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.backgroundColor = 'rgba(10, 30, 23, 0.95)';
+            } else {
+                navbar.style.backgroundColor = '';
+            }
+        });
+    </script>
+
+    {% block extra_js %}
+    <!-- Page-specific JavaScript goes here -->
+    {% endblock %}
+</body>
+
+</html>

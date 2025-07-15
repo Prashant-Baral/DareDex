@@ -1,0 +1,528 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* hero section */
+    .hero-section {
+        background: linear-gradient(135deg, rgb(10, 30, 23) 0%, rgb(25, 94, 72) 50%, rgb(45, 128, 102) 100%);
+        color: white;
+        padding: 80px 0;
+    }
+
+    /* form section  */
+    .form-section {
+        background-color: #f8f9fa;
+        padding: 80px 0;
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, rgb(34, 98, 78) 20%, #1eb679 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: rgb(34, 98, 78);
+        box-shadow: 0 0 0 0.2rem rgba(34, 98, 78, 0.25);
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .form-control.is-valid {
+        border-color: #28a745;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+
+    /* buttons */
+    .btn-custom {
+        background: linear-gradient(135deg, rgb(34, 98, 78) 20%, #1eb679 100%);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-custom:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(34, 98, 78, 0.4);
+        color: white;
+    }
+
+    .btn-custom:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-danger-custom {
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        border: none;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        color: white;
+    }
+
+    /* difficulty badge */
+    .difficulty-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .difficulty-easy {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .difficulty-medium {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .difficulty-hard {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .difficulty-extreme {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .character-count {
+        font-size: 12px;
+        color: #6c757d;
+        text-align: right;
+        margin-top: 5px;
+    }
+
+    .character-count.warning {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .preview-section {
+        background: #e9ecef;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+        display: none;
+    }
+
+    .preview-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #dee2e6;
+    }
+
+    .alert-custom {
+        border-radius: 10px;
+        border: none;
+        padding: 15px 20px;
+    }
+
+    @media (max-width: 768px) {
+        .form-body {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-edit"></i> Edit Your Dare
+                </h1>
+                <p class="lead mb-4">
+                    Update your dare and make it even better!
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Dare Form -->
+<section class="form-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card form-card">
+                    <div class="form-header">
+                        <h3 class="mb-0"><i class="fas fa-edit"></i> Edit Dare Details</h3>
+                    </div>
+                    <div class="form-body">
+                        <!-- Alert Messages -->
+                        <div id="alertContainer"></div>
+
+                        <form id="editDareForm" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Dare Title -->
+                            <div class="mb-4">
+                                <label for="title" class="form-label">
+                                    <i class="fas fa-heading text-primary me-2"></i>Dare Title
+                                </label>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ dare.title }}"
+                                    maxlength="200">
+                                <div class="character-count">
+                                    <span id="titleCount">{{ dare.title|length }}</span>/200 characters
+                                </div>
+                                <div class="invalid-feedback" id="titleError"></div>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="mb-4">
+                                <label for="category" class="form-label">
+                                    <i class="fas fa-tags text-primary me-2"></i>Category *
+                                </label>
+                                <input type="text" class="form-control" id="category" name="category"
+                                    value="{{ dare.category }}" required maxlength="100">
+                                <div class="invalid-feedback" id="categoryError"></div>
+                            </div>
+
+
+
+                            <!-- Difficulty Level -->
+                            <div class="mb-4">
+                                <label for="difficulty" class="form-label">
+                                    <i class="fas fa-chart-line text-primary me-2"></i>Difficulty Level *
+                                </label>
+                                <input type="text" class="form-control" id="difficulty" name="level"
+                                    value="{{ dare.level }}" required maxlength="50">
+                                <div class="mt-2" id="difficultyPreview"></div>
+                                <div class="invalid-feedback" id="difficultyError"></div>
+                            </div>
+
+
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label for="description" class="form-label">
+                                    <i class="fas fa-align-left text-primary me-2"></i>Dare Description
+                                </label>
+                                <textarea class="form-control" id="description" name="dare" rows="4"
+                                    maxlength="1000">{{ dare.dare }}</textarea>
+                                <div class="character-count">
+                                    <span id="descriptionCount">{{ dare.dare|length }}</span>/1000 characters
+                                </div>
+                                <div class="invalid-feedback" id="descriptionError"></div>
+                            </div>
+
+                            <!-- Duration -->
+
+                            <!-- Duration -->
+                            <div class="mb-4">
+                                <label for="duration" class="form-label">
+                                    <i class="fas fa-clock text-primary me-2"></i>Estimated Duration
+                                </label>
+                                <input type="text" class="form-control" id="duration" name="duration" maxlength="100"
+                                    value="{{ dare.duration }}">
+                                <div class="invalid-feedback" id="durationError"></div>
+                            </div>
+
+                            <!-- Safety Instructions -->
+                            <div class="mb-4">
+                                <label for="safety_instructions" class="form-label">
+                                    <i class="fas fa-list-check text-primary me-2"></i>Safety Instructions
+                                </label>
+                                <textarea class="form-control" id="safety_instructions" name="safety" rows="3"
+                                    placeholder="List any safety instructions.">{{ dare.safety }}</textarea>
+                            </div>
+
+                            <!-- Your Name -->
+                            <div class="mb-4">
+                                <label for="uploaderName" class="form-label">
+                                    <i class="fas fa-user-edit text-primary me-2"></i>Your Name
+                                </label>
+                                <input type="text" class="form-control" id="uploaderName" name="name"
+                                    value="{{ dare.name }}" placeholder="Enter your name">
+                                <div class="invalid-feedback" id="uploaderNameError"></div>
+                            </div>
+
+                            <!-- Safety Warning -->
+                            <div class="mb-4">
+                                <div class="alert alert-warning alert-custom" role="alert">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>Safety First!</strong> Please ensure your dare is safe and doesn't encourage
+                                    harmful behavior.
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 g-3">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-custom w-100" onclick="previewDare()">
+                                        <i class="fas fa-eye me-2"></i>Preview
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-custom w-100" id="submitBtn">
+                                        <i class="fas fa-save me-2"></i>Update Dare
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div id="previewSection" class="preview-section" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5><i class="fas fa-eye me-2"></i>Dare Preview</h5>
+                        <button type="button" class="btn btn-danger-custom btn-sm" onclick="hidePreview()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="preview-card" id="previewCard">
+                        <!-- Preview content will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Modal -->
+<div class="modal fade" id="updateSuccessModal" tabindex="-1" aria-labelledby="updateSuccessModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="updateSuccessModalLabel">✅ Updated!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Your dare has been updated successfully!</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Great!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Character counter functionality
+    function setupCharacterCounters() {
+        const titleInput = document.getElementById('title');
+        const descriptionInput = document.getElementById('description');
+        const titleCount = document.getElementById('titleCount');
+        const descriptionCount = document.getElementById('descriptionCount');
+
+        titleInput.addEventListener('input', function () {
+            const count = this.value.length;
+            titleCount.textContent = count;
+            titleCount.parentElement.classList.toggle('warning', count > 180);
+        });
+
+        descriptionInput.addEventListener('input', function () {
+            const count = this.value.length;
+            descriptionCount.textContent = count;
+            descriptionCount.parentElement.classList.toggle('warning', count > 900);
+        });
+    }
+
+    // Alert system
+    function showAlert(message, type = 'info') {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-custom alert-dismissible fade show`;
+        alertDiv.innerHTML = `
+            <i class="fas fa-${type === 'danger' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        alertContainer.appendChild(alertDiv);
+
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Difficulty level preview
+    function updateDifficultyPreview() {
+        const difficulty = document.getElementById('difficulty').value;
+        const previewDiv = document.getElementById('difficultyPreview');
+
+        if (difficulty) {
+            const badges = {
+                'easy': '<span class="difficulty-badge difficulty-easy">Easy</span>',
+                'medium': '<span class="difficulty-badge difficulty-medium">Medium</span>',
+                'hard': '<span class="difficulty-badge difficulty-hard">Hard</span>',
+                'extreme': '<span class="difficulty-badge difficulty-extreme">Extreme</span>'
+            };
+            previewDiv.innerHTML = badges[difficulty] || '';
+        } else {
+            previewDiv.innerHTML = '';
+        }
+    }
+
+    // Dare preview functionality
+    function previewDare() {
+        const title = document.getElementById('title').value || 'Untitled Dare';
+        const category = document.getElementById('category').value;
+        const difficulty = document.getElementById('difficulty').value;
+        const description = document.getElementById('description').value || 'No description provided';
+        const duration = document.getElementById('duration').value;
+        const safetyInstructions = document.getElementById('safety_instructions').value;
+        const uploaderName = document.getElementById('uploaderName').value || 'Anonymous';
+
+        const categoryLabels = {
+            'social': 'Social & Interaction',
+            'creative': 'Creative & Artistic',
+            'physical': 'Physical Challenge',
+            'mental': 'Mental Challenge',
+            'food': 'Food & Eating',
+            'academic': 'Academic',
+            'adventure': 'Adventure',
+            'comedy': 'Comedy & Fun',
+            'skill': 'Skill Based',
+            'other': 'Other'
+        };
+
+        const durationLabels = {
+            '5_minutes': '5 minutes',
+            '15_minutes': '15 minutes',
+            '30_minutes': '30 minutes',
+            '1_hour': '1 hour',
+            '2_hours': '2-3 hours',
+            'half_day': 'Half day',
+            'full_day': 'Full day',
+            'multiple_days': 'Multiple days'
+        };
+
+        const difficultyBadges = {
+            'easy': '<span class="difficulty-badge difficulty-easy">Easy</span>',
+            'medium': '<span class="difficulty-badge difficulty-medium">Medium</span>',
+            'hard': '<span class="difficulty-badge difficulty-hard">Hard</span>',
+            'extreme': '<span class="difficulty-badge difficulty-extreme">Extreme</span>'
+        };
+
+        const previewCard = document.getElementById('previewCard');
+        previewCard.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h4 class="mb-1">${title}</h4>
+                    <small class="text-muted">by ${uploaderName}</small>
+                </div>
+                <div class="text-end">
+                    ${difficulty ? difficultyBadges[difficulty] : '<span class="text-muted">No difficulty set</span>'}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                ${category ? `<span class="badge bg-secondary me-2">
+                    <i class="fas fa-tag me-1"></i>${categoryLabels[category]}
+                </span>` : ''}
+                ${duration ? `<span class="badge bg-info">
+                    <i class="fas fa-clock me-1"></i>${durationLabels[duration]}
+                </span>` : ''}
+            </div>
+            
+            <div class="mb-3">
+                <h6><i class="fas fa-align-left me-2"></i>Description</h6>
+                <p class="text-muted">${description}</p>
+            </div>
+            
+            ${safetyInstructions ? `
+            <div class="mb-3">
+                <h6><i class="fas fa-shield-alt me-2"></i>Safety Instructions</h6>
+                <p class="text-muted">${safetyInstructions}</p>
+            </div>
+            ` : ''}
+            
+            <div class="text-muted small">
+                <i class="fas fa-info-circle me-1"></i>
+                This is how your updated dare will appear to other users.
+            </div>
+        `;
+
+        document.getElementById('previewSection').style.display = 'block';
+        document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hidePreview() {
+        document.getElementById('previewSection').style.display = 'none';
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        setupCharacterCounters();
+        updateDifficultyPreview(); // Show initial difficulty badge
+
+        // Show difficulty badge live
+        document.getElementById('difficulty').addEventListener('change', updateDifficultyPreview);
+
+        // Override form submit to show success modal
+        document.getElementById('editDareForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Show success modal
+            const successModal = new bootstrap.Modal(document.getElementById('updateSuccessModal'));
+            successModal.show();
+
+            // Submit the form after showing modal
+            setTimeout(() => {
+                this.submit();
+            }, 1000);
+        });
+    });
+</script>
+{% endblock %}
