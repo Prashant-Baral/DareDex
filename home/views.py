@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from . models import Dareupload, Contact
-
+from django.contrib.auth.models import User
 
 def home(request):
     return render(request,"home.html")

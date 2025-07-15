@@ -1,11 +1,5 @@
 from django.db import models
 from django.utils import timezone
-
-class DareExchange(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    dare = models.TextField()
-    phone_num = models.BigIntegerField()
   
 class Dareupload(models.Model):
     name = models.CharField(max_length=100)
@@ -27,3 +21,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# Inheritance
