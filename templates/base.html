@@ -626,21 +626,18 @@
                     </li>
 
                 </ul>
-                <!-- <div class="d-flex align-items-center ms-auto">
-                    <a href="#" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i>Login
+                <div class="d-flex align-items-center ms-auto">
+                    <a href="{% url 'accounts:login' %}" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
                     </a>
-                </div> -->
+                </div>
+
             </div>
         </div>
     </nav>
 
     {% block body %}
     {% endblock %}
-
-    <!-- . -->
-    <!-- . -->
-    <!-- bootstrap 5 modals -->
 
 
     <!-- Privacy Policy Modal -->
@@ -674,7 +671,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Terms of Service Modal -->
     <div class="modal fade" id="termsModal" tabindex="-1">
@@ -798,9 +794,6 @@
         </div>
     </div>
 
-
-    <!-- . -->
-    <!-- . -->
 
     <!-- Professional Footer - Compact -->
     <footer class="footer">

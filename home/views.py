@@ -9,12 +9,8 @@ def home(request):
 def about(request):
     return render(request,"about.html")
 
-
 def contact(request):
     return render(request,"contact.html")
-
-
-
 
 def display(request):
     contacts = Contact.objects.all()
@@ -22,10 +18,6 @@ def display(request):
         'contacts' : contacts,
     }
     return render(request,"display.html",paramters)
-
-
-
-
 
 def dcontact(request):
     if request.method=="POST":
@@ -43,29 +35,7 @@ def dcontact(request):
         
     return render(request,"contact.html")
 
-
-
-
-
-# DashBoard 
-def dashboard(request):
-    dares = Dareupload.objects.all().order_by("-id")
-    
-    parameters = {
-        'dares': dares,
-    }
-    return render(request, 'dashboard.html', parameters)
-
-
-
-
-
-#  Dares Page 
-def dare(request):
-    return render(request,"dare.html")
-
-
- # Creating Dare 
+# Creating Dare 
 def create_dares(request):
     if request.method =="POST":
         print(" POST request received")
@@ -91,8 +61,6 @@ def create_dares(request):
         return redirect('/dashboard/?submitted=1')
     
     return render(request,"dare.html")
-
-
 
 # deleting dare
 
@@ -133,3 +101,16 @@ def edit_dare(request,id):
         "dare" : dare
     }
     return render(request,"edit_dare.html",parameters)
+
+# DashBoard 
+def dashboard(request):
+    dares = Dareupload.objects.all().order_by("-id")
+    
+    parameters = {
+        'dares': dares,
+    }
+    return render(request, 'dashboard.html', parameters)
+
+#  Dares Page 
+def dare(request):
+    return render(request,"dare.html")

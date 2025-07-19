@@ -11,7 +11,6 @@
         background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-main) 50%, var(--accent-soft) 100%);
         position: relative;
         overflow: hidden;
-        padding: 2rem 0;
     }
 
     .auth-container::before {
@@ -189,6 +188,23 @@
         box-shadow: 0 0 0 0.2rem rgba(160, 255, 224, 0.25);
     }
 
+    .forgot-password {
+        text-align: right;
+        margin-top: -1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .forgot-password a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+
+    .forgot-password a:hover {
+        color: var(--primary-main);
+    }
+
     .alert {
         border-radius: 12px;
         border: none;
@@ -205,60 +221,6 @@
         color: #155724;
     }
 
-    .password-requirements {
-        background: rgba(160, 255, 224, 0.1);
-        border: 1px solid rgba(160, 255, 224, 0.3);
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        font-size: 0.85rem;
-    }
-
-    .password-requirements h6 {
-        color: var(--primary-main);
-        margin-bottom: 0.5rem;
-    }
-
-    .password-requirements ul {
-        margin-bottom: 0;
-        padding-left: 1.2rem;
-    }
-
-    .password-requirements li {
-        color: var(--text-secondary);
-        margin-bottom: 0.25rem;
-    }
-
-    .form-row {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .form-row .form-floating {
-        flex: 1;
-    }
-
-    .terms-section {
-        background: rgba(248, 249, 250, 0.8);
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1.5rem;
-        font-size: 0.9rem;
-    }
-
-    .terms-section .form-check-label {
-        color: var(--text-secondary);
-    }
-
-    .terms-section a {
-        color: var(--primary-main);
-        text-decoration: none;
-    }
-
-    .terms-section a:hover {
-        text-decoration: underline;
-    }
-
     /* Responsive Design */
     @media (max-width: 768px) {
         .auth-container {
@@ -267,11 +229,6 @@
 
         .auth-card {
             margin: 1rem 0;
-        }
-
-        .form-row {
-            flex-direction: column;
-            gap: 0;
         }
     }
 
@@ -298,14 +255,14 @@
 <div class="auth-container">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8">
+            <div class="col-lg-5 col-md-7">
                 <div class="auth-card p-4 p-md-5">
                     <div class="auth-header">
                         <div class="auth-logo">
-                            <i class="fas fa-user-plus"></i>
+                            <i class="fas fa-rocket"></i>
                         </div>
-                        <h2 class="auth-title">Join DareDex</h2>
-                        <p class="auth-subtitle">Create your account and start your dare adventure</p>
+                        <h2 class="auth-title">Welcome Back!</h2>
+                        <p class="auth-subtitle">Sign in to continue your dare adventures</p>
                     </div>
 
                     {% if messages %}
@@ -317,79 +274,43 @@
                     {% endfor %}
                     {% endif %}
 
-                    <form method="post" action="{% url 'accounts:register' %}">
+                    <form method="post" action="{% url 'accounts:login' %}">
                         {% csrf_token %}
-
-                        <div class="form-row">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="first_name" name="first_name"
-                                    placeholder="First Name" required>
-                                <label for="first_name">
-                                    <i class="fas fa-user me-2"></i>First Name
-                                </label>
-                            </div>
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="last_name" name="last_name"
-                                    placeholder="Last Name" required>
-                                <label for="last_name">
-                                    <i class="fas fa-user me-2"></i>Last Name
-                                </label>
-                            </div>
-                        </div>
 
                         <div class="form-floating">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                                 required>
                             <label for="username">
-                                <i class="fas fa-at me-2"></i>Username
+                                <i class="fas fa-user me-2"></i>Username
                             </label>
                         </div>
 
                         <div class="form-floating">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                required>
-                            <label for="email">
-                                <i class="fas fa-envelope me-2"></i>Email Address
-                            </label>
-                        </div>
-
-                        <div class="form-floating">
-                            <input type="password" class="form-control" id="password1" name="password1"
+                            <input type="password" class="form-control" id="password" name="password"
                                 placeholder="Password" required>
-                            <label for="password1">
+                            <label for="password">
                                 <i class="fas fa-lock me-2"></i>Password
                             </label>
                         </div>
 
-                        <div class="form-floating">
-                            <input type="password" class="form-control" id="password2" name="password2"
-                                placeholder="Confirm Password" required>
-                            <label for="password2">
-                                <i class="fas fa-lock me-2"></i>Confirm Password
-                            </label>
-                        </div>
-
-                        <div class="password-requirements">
-                            <h6><i class="fas fa-shield-alt me-2"></i>Password Requirements:</h6>
-                            <ul>
-                                <li>At least 8 characters long</li>
-                                <li>Contains both letters and numbers</li>
-                                <li>Not too similar to your username</li>
-                                <li>Not a commonly used password</li>
-                            </ul>
-                        </div>
-
-                        <div class="terms-section">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
-                                <label class="form-check-label" for="terms">
-                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                                </label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                                    <label class="form-check-label" for="remember">
+                                        Remember me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="forgot-password">
+                                    <a href="#">Forgot password?</a>
+                                </div>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-auth">
-                            <i class="fas fa-user-plus me-2"></i>Create Account
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
                         </button>
                     </form>
 
@@ -398,8 +319,8 @@
                     </div>
 
                     <div class="auth-link">
-                        <p class="text-muted">Already have an account?
-                            <a href="{% url 'accounts:login' %}">Sign in here</a>
+                        <p class="text-muted">Don't have an account?
+                            <a href="{% url 'accounts:register' %}">Create one now</a>
                         </p>
                     </div>
 
