@@ -615,7 +615,7 @@
                             Dare</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard'%}"><i class="fas fa-compass me-1"></i>Browse
+                        <a class="nav-link" href="{% url 'browse'%}"><i class="fas fa-compass me-1"></i>Browse
                             Dares</a>
                     </li>
                     <li class="nav-item">
@@ -626,11 +626,23 @@
                     </li>
 
                 </ul>
+
+                {% if request.user.is_authenticated %}
+                <!-- log out -->
+                <div class="d-flex align-items-center ms-auto">
+                    <a href="{% url 'accounts:logout' %}" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Logout
+                    </a>
+                </div>
+                {% else %}
+                <!-- log in -->
+
                 <div class="d-flex align-items-center ms-auto">
                     <a href="{% url 'accounts:login' %}" class="login-btn">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </a>
                 </div>
+                {% endif %}
 
             </div>
         </div>
@@ -830,7 +842,7 @@
                         <h5>Quick Links</h5>
                         <a href="/" class="footer-link">Home</a>
                         <a href="{% url 'dare'%}" class="footer-link">Create Dare</a>
-                        <a href="{% url 'dashboard'%}" class="footer-link">Browse Dares</a>
+                        <a href="{% url 'browse'%}" class="footer-link">Browse Dares</a>
                         <a href="{% url 'about_us'%}" class="footer-link">About Us</a>
                     </div>
                 </div>

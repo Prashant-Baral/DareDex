@@ -58,7 +58,7 @@ def create_dares(request):
         )
         new_dare.save()
         
-        return redirect('/dashboard/?submitted=1')
+        return redirect('/browse/?submitted=1')
     
     return render(request,"dare.html")
 
@@ -67,7 +67,7 @@ def create_dares(request):
 def delete_dare(request,id):
     dare = Dareupload.objects.get(id=id)
     dare.delete()
-    return redirect('dashboard')
+    return redirect('browse')
 
 
 # edit dare
@@ -95,21 +95,21 @@ def edit_dare(request,id):
         dare.safety = user_safety
         dare.save()
         
-        return redirect('dashboard')
+        return redirect('browse')
 
     parameters = {
         "dare" : dare
     }
     return render(request,"edit_dare.html",parameters)
 
-# DashBoard 
-def dashboard(request):
+# browse
+def browse(request):
     dares = Dareupload.objects.all().order_by("-id")
     
     parameters = {
         'dares': dares,
     }
-    return render(request, 'dashboard.html', parameters)
+    return render(request, 'browse.html', parameters)
 
 #  Dares Page 
 def dare(request):
