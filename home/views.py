@@ -114,3 +114,4 @@ def browse(request):
 #  Dares Page 
 def dare(request):
     return render(request,"dare.html")
+
